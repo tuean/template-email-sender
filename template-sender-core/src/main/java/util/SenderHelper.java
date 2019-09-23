@@ -2,12 +2,17 @@ package util;
 
 import com.sun.nio.sctp.MessageInfo;
 import entity.ServerSetting;
+import model.BaseResponse;
+import model.EmailModel;
+import model.EmailTemplate;
+import model.ParseResult;
 import org.apache.commons.lang.StringUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
 
 import static constant.Constant.*;
@@ -48,6 +53,22 @@ public class SenderHelper {
 
         }
         session = null;
+    }
+
+
+
+    public static List<String> doSend(EmailTemplate emailTemplate) {
+        ParseResult result = TemplateUtil.parse(emailTemplate);
+        if (result.getError().size() > 0) {
+            return result.getError();
+        }
+
+
+        List<EmailModel> modelList = result.getModelList();
+        for (EmailModel model : modelList) {
+
+        }
+
     }
 
 
