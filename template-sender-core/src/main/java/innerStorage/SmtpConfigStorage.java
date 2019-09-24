@@ -1,6 +1,6 @@
 package innerStorage;
 
-import entity.SmtpConfig;
+import entity.ServerSetting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,16 +8,16 @@ import java.util.UUID;
 
 public class SmtpConfigStorage {
 
-    private static Map<String, SmtpConfig> smtpConfigMap = new HashMap<String, SmtpConfig>();
+    private static Map<String, ServerSetting> smtpConfigMap = new HashMap<String, ServerSetting>();
 
 
-    public static String put(SmtpConfig smtpConfig) {
+    public static String put(ServerSetting smtpConfig) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         smtpConfigMap.put(uuid, smtpConfig);
         return uuid;
     }
 
-    public static SmtpConfig get(String key) {
+    public static ServerSetting get(String key) {
         return smtpConfigMap.get(key);
     }
 

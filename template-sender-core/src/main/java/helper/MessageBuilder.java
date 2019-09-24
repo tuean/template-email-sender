@@ -1,4 +1,4 @@
-package util;
+package helper;
 
 import entity.ServerSetting;
 import entity.WholeMessageInfo;
@@ -14,6 +14,8 @@ import javax.mail.internet.*;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Set;
 
 
 public class MessageBuilder {
@@ -23,10 +25,10 @@ public class MessageBuilder {
     private static Transport transport = null;
 
 
-    public static Message makeMessage(WholeMessageInfo messageInfo, ServerSetting serverSetting) throws MessagingException, IOException {
+    public static MimeMessage makeMessage(WholeMessageInfo messageInfo) throws MessagingException, IOException {
         MimeMessage message = new MimeMessage(session);
 
-        setReceiver(message, messageInfo, serverSetting);
+        setReceiver(message, messageInfo);
 
         addMain(message, messageInfo);
 
@@ -52,12 +54,12 @@ public class MessageBuilder {
     }
 
 
-    private static void setReceiver(Message message, WholeMessageInfo messageInfo, ServerSetting serverSetting) throws MessagingException {
-        message.setFrom(new InternetAddress(serverSetting.getAccount()));
+    private static void setReceiver(Message message, WholeMessageInfo messageInfo) throws MessagingException {
+        message.setFrom(new InternetAddress(messageInfo.getServerSetting().getAccount()));
 
-        message.addRecipients(MimeMessage.RecipientType.TO, messageInfo.getToList());
-        message.addRecipients(MimeMessage.RecipientType.CC, messageInfo.getCcList());
-        message.addRecipients(MimeMessage.RecipientType.BCC, messageInfo.getBccList());
+        message.addRecipients(MimeMessage.RecipientType.TO, messageInfo.getToList().toArray(new InternetAddress[0]));
+        message.addRecipients(MimeMessage.RecipientType.CC, messageInfo.getCcList().toArray(new InternetAddress[0]));
+        message.addRecipients(MimeMessage.RecipientType.BCC, messageInfo.getBccList().toArray(new InternetAddress[0]));
     }
 
 
@@ -113,6 +115,13 @@ public class MessageBuilder {
 
     private static void fillPhotoInContent(MimeMessage message, WholeMessageInfo messageInfo) {
         // todo show picture in the content of the email
+        String content = messageInfo.getContent();
+        Set<String> unreplacedPhoto = ContentBuilder.getUnreplacedPhoto(content);
+        LinkedList<String> contentSplit = ContentBuilder.splitContent(content);
+        for (String param : contentSplit) {
+            boolean isPhotoFlag = ContentBuilder.isPhotoPlaceHolder(param);
+
+        }
     }
 
 
@@ -131,8 +140,7 @@ public class MessageBuilder {
     /**
      * 根据传入的邮件正文body和文件路径创建图文并茂的正文部分
      */
-    public MimeBodyPart createContent(String body, String filePath)
-            throws Exception {
+    public MimeBodyPart createContent(String body, String filePath) throws Exception {
         // 用于保存最终正文部分
         MimeBodyPart contentBody = new MimeBodyPart();
         // 用于组合文本和图片，"related"型的MimeMultipart对象

@@ -2,6 +2,8 @@ package model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,6 +16,8 @@ public class BaseResponse<T> {
     private String message;
 
     private T data;
+
+    private List<String> error;
 
     public BaseResponse<T> ok() {
         this.code = 0;
@@ -38,6 +42,15 @@ public class BaseResponse<T> {
         this.message = "success";
         this.data = data;
         return this;
+    }
+
+    public BaseResponse<T> withError(List<String> errorList) {
+        BaseResponse response = ok();
+        if (errorList == null || errorList.size() > 0) {
+            response = error();
+            response.setError(errorList);
+        }
+        return response;
     }
 
 

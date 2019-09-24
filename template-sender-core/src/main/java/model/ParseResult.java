@@ -1,5 +1,6 @@
 package model;
 
+import entity.WholeMessageInfo;
 import lombok.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ParseResult {
 
 
-    private List<EmailModel> modelList;
+    private List<WholeMessageInfo> messageInfoList;
 
     private List<String> error;
 

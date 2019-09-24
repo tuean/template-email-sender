@@ -1,7 +1,11 @@
 package model;
 
+import entity.Annex;
+import entity.PhotoTair;
+import entity.ReceiverContainer;
 import lombok.*;
 
+import javax.sound.midi.Receiver;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +25,9 @@ public class EmailTemplate {
 
     private LinkedList<Map<String, Object>> params;
 
-    private List<String> toList;
+    private LinkedList<Map<String, PhotoTair>> photos;
 
-    private List<String> ccList;
-
-    private List<String> bccList;
+    private LinkedList<ReceiverContainer> receiverList;
 
 
 }

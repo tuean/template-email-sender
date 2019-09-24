@@ -1,6 +1,6 @@
 package com.tuean.email.templatesenderrest.controller;
 
-import entity.SmtpConfig;
+import entity.ServerSetting;
 import innerStorage.SmtpConfigStorage;
 import model.BaseResponse;
 import org.slf4j.Logger;
@@ -17,16 +17,16 @@ public class ConfigController {
 
 
     @RequestMapping(value = "/config/smtp", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse setSmtpConfig(@RequestBody SmtpConfig smtpConfig) {
-        return new BaseResponse().ok(SmtpConfigStorage.put(smtpConfig));
+    public BaseResponse setSmtpConfig(@RequestBody ServerSetting serverSetting) {
+        return new BaseResponse().ok(SmtpConfigStorage.put(serverSetting));
     }
 
     @RequestMapping(value = "/config/smtp", method = RequestMethod.GET)
     public BaseResponse getSmtpConfig(@RequestParam("key") String key) {
-        SmtpConfig smtpConfig = SmtpConfigStorage.get(key);
-        return smtpConfig == null ?
+        ServerSetting serverSetting = SmtpConfigStorage.get(key);
+        return serverSetting == null ?
                 new BaseResponse().error() :
-                new BaseResponse().ok(smtpConfig);
+                new BaseResponse().ok(serverSetting);
     }
 
 

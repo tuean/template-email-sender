@@ -8,7 +8,6 @@ public enum ResultType {
 
     ERROR_SEND          (101, "发送异常"),
 
-
     ERROR_RECEIVE       (201, "接受异常")
 
     ;

@@ -27,11 +27,11 @@ public class WholeMessageInfo {
 
     private String iCalText;
 
-    private InternetAddress[] toList;
+    private List<InternetAddress> toList;
 
-    private InternetAddress[] ccList;
+    private List<InternetAddress> ccList;
 
-    private InternetAddress[] bccList;
+    private List<InternetAddress> bccList;
 
     private List<Annex> annexList;
 
