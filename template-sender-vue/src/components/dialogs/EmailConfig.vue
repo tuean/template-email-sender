@@ -52,9 +52,9 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button type="primary" @click="onRemove">删除</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="onSubmit()">保存</el-button>
+        <el-button type="primary" @click="onRemove()">删除</el-button>
+        <el-button @click="cancel()">取消</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -62,19 +62,12 @@
 
 
 <script>
+  import {addItem, deleteItem, updateItem, deleteSelected} from '../../util/storage'
+  import {randomString} from "../../util/common";
+
   export default {
       data() {
           return {
-              form: {
-                  name: '',
-                  region: '',
-                  date1: '',
-                  date2: '',
-                  delivery: false,
-                  type: [],
-                  resource: '',
-                  desc: '',
-              },
               emailConfigVisible: this.show,
               ifList: [
                   {
@@ -94,7 +87,9 @@
           },
           data: {
               type: Object,
-              default: {}
+              default: function () {
+                return {}
+              }
           }
       },
       watch: {
@@ -104,13 +99,41 @@
       },
       methods: {
           onSubmit() {
-              console.log('submit!');
+              if (this.data['id'] != null) {
+                updateItem(this.data)
+              } else {
+                let id = randomString(32)
+                this.data['id'] = id
+                addItem(this.data)
+              }
+              this.closeModal()
           },
           onRemove() {
+            let _this = this
+            this.$confirm('确认删除?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.closeModal()
+              _this.$emit("callFather", _this.data['id'])
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
 
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消删除'
+              });
+            });
           },
           closeModal() {
               this.$emit('update:show', false)
+          },
+          cancel() {
+              this.closeModal()
           }
       }
   }
