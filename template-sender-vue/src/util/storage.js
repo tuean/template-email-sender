@@ -70,3 +70,12 @@ export const select = (item) => {
 export const deleteSelected = () => {
   localStorage.removeItem(selectedKey)
 }
+
+const tempForContent = 'email-content'
+export const contentStore = (data) => {
+  localStorage.setItem(tempForContent, JSON.stringify())
+}
+
+export const getTempContent = () => {
+  return JSON.parse(localStorage.getItem(tempForContent))
+}

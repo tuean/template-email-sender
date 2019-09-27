@@ -1,7 +1,7 @@
 import axios from "axios";
-import store from "@/store";
-import { Message } from "element-ui";
-let router = import("@/router");
+// import store from "@/store";
+// import { Message } from "element-ui";
+// let router = import("@/router");
 
 axios.defaults.baseURL = "http://localhost:8888/";
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
@@ -48,12 +48,8 @@ axios.interceptors.response.use(response => {
   let data = response.data;
   let isJson = (response.headers["content-type"] || "").includes("json");
   if (isJson) {
-    if (data.code === 200) {
-      return Promise.resolve({
-        data: data.data,
-        msg: data.msg,
-        code: data.code,
-      });
+    if (data.code === 0) {
+      return Promise.resolve(data);
     }
     return Promise.reject(
       data.msg ||

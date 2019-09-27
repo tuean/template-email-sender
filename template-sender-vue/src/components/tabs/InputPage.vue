@@ -1,49 +1,98 @@
 <template>
   <div>
+    <section class="editor-container">
+      <el-row type="flex" class="row-bg">
+        <el-col :span="1">
+          <!-- 图片上传组件辅助-->
+          <el-upload
+            class="avatar-uploader"
+            :action="serverUrl"
+            name="img"
+            :headers="header"
+            :show-file-list="false"
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            :before-upload="beforeUpload">
+          </el-upload>
+        </el-col>
 
-    <el-row type="flex" class="row-bg">
-      <el-col :span="1">
-        <!-- 图片上传组件辅助-->
-        <el-upload
-          class="avatar-uploader"
-          :action="serverUrl"
-          name="img"
-          :headers="header"
-          :show-file-list="false"
-          :on-success="uploadSuccess"
-          :on-error="uploadError"
-          :before-upload="beforeUpload">
-        </el-upload>
-      </el-col>
-
-      <el-col :span="20">
-        <section class="editor">
-          <quill-editor
-            v-model="content"
-            ref="myQuillEditor"
-            :options="editorOption"
-            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-            @change="onEditorChange($event)">
-          </quill-editor>
-        </section>
-      </el-col>
-      <el-col :span="1">
-
-      </el-col>
-      <el-col :span="3">
-        <el-button type="primary" @click="checkContent()">校验</el-button>
-      </el-col>
-    </el-row>
-
-    <section>
-
+        <el-col :span="20">
+          <section class="editor">
+            <quill-editor
+              v-model="content"
+              ref="myQuillEditor"
+              :options="editorOption"
+              @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+              @change="onEditorChange($event)">
+            </quill-editor>
+          </section>
+        </el-col>
+        <el-col :span="1"/>
+        <el-col :span="3">
+          <el-button type="primary" @click="checkContent()">校验</el-button>
+          <div class="notice">会清空表格数据</div>
+        </el-col>
+      </el-row>
     </section>
 
+    <section>
+      <el-row type="flex" class="row-bg">
+        <el-col :span="1"/>
+        <el-col :span="20">
+          <el-table
+            :data="tableData"
+            border
+            highlight-current-row
+            style="width:100%">
+
+            <el-table-column
+              v-for="(val, i) in stringParams"
+              :key="i"
+              :prop='val.prop'
+              :label='val.label'
+              align="center">
+            </el-table-column>
+
+            <el-table-column
+              v-for="(val, i) in photoParams"
+              :key="i"
+              :prop='val.prop'
+              :label='val.label'
+              align="center">
+            </el-table-column>
+
+            <el-table-column
+              v-if="tableData.size > 0"
+              fixed="right"
+              label="操作"
+              >
+              <template slot-scope="scope">
+                <el-button @click="reCheck(scope.row)" type="text" size="small">查看</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+        <el-col :span="1"/>
+        <el-col :span="3">
+          <el-button type="primary" @click="add()">新增</el-button>
+        </el-col>
+      </el-row>
+    </section>
+
+    <params-fill :show.sync="paramFillVisible"
+                 v-bind:param-list="stringParams"
+                 v-bind:photo-list="photoParams"
+                 v-if="paramFillVisible"
+    />
   </div>
 </template>
 
 
 <script>
+
+  import ParamsFill from "../dialogs/ParamsFill";
+  import {checkTemplate} from '../../axios/api'
+  import {contentStore, getTempContent} from '../../util/storage'
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
@@ -70,7 +119,7 @@
           editorOption: {
             placeholder: "",
             theme: "snow", // or 'bubble'
-            placeholder: "您想说点什么？",
+            placeholder: "邮件模板~",
             modules: {
               toolbar: {
                 container: toolbarOptions,
@@ -91,7 +140,12 @@
           serverUrl: "/v1/blog/imgUpload", // 这里写你要上传的图片服务器地址
           header: {
             // token: sessionStorage.token
-          } // 有的图片服务器要求请求头需要有token
+              // 有的图片服务器要求请求头需要有token
+          },
+          tableData: [],
+          stringParams: [],
+          photoParams: [],
+          paramFillVisible: false,
         };
       },
       computed: {
@@ -112,17 +166,44 @@
         },
         // 获得焦点事件
         onEditorChange(){
-
+            contentStore(this.content)
         },
         beforeUpload() {
 
         },
         // 内容改变事件
         saveHtml: function(event){
-          alert(this.content);
+
         },
         checkContent() {
+            let _this = this
+            let data = {
+                content: this.content
+            }
+            checkTemplate(data).then(res => {
+                debugger
+                let paramList = res.data.paramList || []
+                let photoList = res.data.photoList || []
+                _this.stringParams = []
+                _this.photoParams = []
+                for (let x = 0; paramList.length > x; x++) {
+                    let data = {
+                        "prop" : paramList[x],
+                        "label" : paramList[x]
+                    }
+                    _this.stringParams.push(data)
+                }
 
+                for (let x = 0; photoList.length > x; x++) {
+                    let data = {
+                        "prop" : paramList[x],
+                        "label" : paramList[x]
+                    }
+                    _this.photoParams.push(data)
+                }
+            }).catch(err => {
+                console.log(err)
+            })
         },
         uploadSuccess(res, file) {
           // res为图片服务器返回的数据
@@ -144,18 +225,33 @@
         },
         uploadError() {
           this.$message.error("图片插入失败");
-        }
-    }
+        },
+        add() {
+            this.paramFillVisible = true
+        },
+          reCheck() {
+
+          }
+    },
+      components: {
+          ParamsFill
+      },
+      created() {
+          let temp = getTempContent();
+          if (temp != null && temp.length > 0) {
+              this.content = temp
+          }
+      }
   }
 </script>
 
 <style>
-  .editor {
-      height: 300px;
+  .editor-container {
+    height: auto;
   }
   .editor {
     line-height: normal !important;
-    height: 800px;
+    height: auto;
   }
   .ql-snow .ql-tooltip[data-mode=link]::before {
     content: "请输入链接地址:";

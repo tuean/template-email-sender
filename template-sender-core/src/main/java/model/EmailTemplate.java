@@ -3,6 +3,7 @@ package model;
 import entity.Annex;
 import entity.PhotoTair;
 import entity.ReceiverContainer;
+import entity.ServerSetting;
 import lombok.*;
 
 import javax.sound.midi.Receiver;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class EmailTemplate {
 
     private String smtpConfigId;
+
+    private ServerSetting smtpConfig;
 
     private String template;
 

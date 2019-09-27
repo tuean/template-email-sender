@@ -24,3 +24,8 @@ export function addServerSetting(data) {
 export function getServerSetting(uuid) {
   return get("/config/smtp?key=" + uuid)
 }
+
+
+export function checkTemplate(data) {
+  return post('/template/check', data)
+}

@@ -9,6 +9,8 @@ import freemarker.template.TemplateExceptionHandler;
 import innerStorage.SmtpConfigStorage;
 import model.EmailTemplate;
 import model.ParseResult;
+import model.TemplateCheckRequest;
+import model.TemplateCheckResponse;
 import org.apache.commons.lang.StringUtils;
 import util.CommonUtil;
 import util.FileUtil;
@@ -90,7 +92,7 @@ public class ContentBuilder {
                     .toList(parseAddresses(emailTemplate.getReceiverList().get(x).getToList(), errorList))
                     .title(replace(emailTemplate.getTitle(), map))
                     .content(replace(emailTemplate.getTemplate(), map))
-                    .serverSetting(SmtpConfigStorage.get(emailTemplate.getSmtpConfigId()))
+                    .serverSetting(emailTemplate.getSmtpConfig() == null ? SmtpConfigStorage.get(emailTemplate.getSmtpConfigId()) : emailTemplate.getSmtpConfig())
                     .build();
             list.add(model);
         }
@@ -188,10 +190,22 @@ public class ContentBuilder {
     }
 
 
+    public static TemplateCheckResponse parseContent(String content) {
+        return TemplateCheckResponse.builder()
+                .paramList(getUnreplaced(content, WORD_SEP))
+                .photoList(getUnreplaced(content, PHOTO_SEP))
+                .build();
+    }
+
+//    public static void main(String[] args) {
+//        String source = "asjdd$w{word}123";
+//        System.out.println(getUnreplaced(source, WORD_SEP));
+//    }
+
 
     private static Set<String> getUnreplaced(String source, String type) {
         Set<String> keyList = new HashSet<>();
-        int start = 0, end = 0, index = 2;
+        int start = -1, end = -1, index = 2;
         int length = source.length();
         if (length < index) return keyList;
 
@@ -203,8 +217,8 @@ public class ContentBuilder {
                 end = index;
             }
 
-            if (start < end) {
-                keyList.add(source.substring(start, end));
+            if (start >= 0 && end > 0 && start + 1 < end) {
+                keyList.add(source.substring(start + 1, end));
                 start = index; end = index;
             }
             index++;
@@ -265,9 +279,6 @@ public class ContentBuilder {
         return result;
     }
 
-    public static void main(String[] args) {
-        System.out.println(" oasda ads ".split("a"));
-    }
 
 
 
