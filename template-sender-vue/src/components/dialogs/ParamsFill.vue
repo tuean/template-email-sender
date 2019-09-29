@@ -2,12 +2,26 @@
   <el-dialog title="参数设置" :visible.sync="paramFillVisible" v-if="paramFillVisible" :show="show"  @close="closeModal()" :append-to-body="true">
     <el-form ref="form" :model="data" label-width="80px">
 
-      <el-form-column
-        v-for="(index, val) in paramList"
+      <el-form-item label="收件人">
+        <el-input v-model="data.toList" placeholder="多个请用英文逗号分隔"></el-input>
+      </el-form-item>
+
+      <el-form-item label="抄送人">
+        <el-input v-model="data.ccList" placeholder="多个请用英文逗号分隔"></el-input>
+      </el-form-item>
+
+      <el-form-item label="密送人">
+        <el-input v-model="data.bccList" placeholder="多个请用英文逗号分隔"></el-input>
+      </el-form-item>
+
+
+      <el-form-item
+        v-for="(val, i) in paramList"
+        :key="i"
         :label="val.label"
       >
         <el-input v-model="data[val.prop]" />
-      </el-form-column>
+      </el-form-item>
 
 
 
@@ -23,6 +37,8 @@
 
 
 <script>
+
+
   export default {
       data() {
           return {
