@@ -14,6 +14,7 @@
         <module>template-sender-core</module>
         <module>template-sender-gui</module>
         <module>template-sender-rest</module>
+        <module>template-sender-excel</module>
     </modules>
 
 
