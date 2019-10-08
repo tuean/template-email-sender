@@ -3,6 +3,8 @@
     <section class="editor-container">
       <el-row type="flex" class="row-bg">
         <el-col :span="1">
+          <span>模板：</span>
+
           <!-- 图片上传组件辅助-->
           <el-upload
             class="avatar-uploader"
@@ -37,7 +39,7 @@
 
     <section>
       <el-row type="flex" class="row-bg">
-        <el-col :span="1"/>
+        <el-col :span="1">参数：</el-col>
         <el-col :span="20">
           <el-table
             :data="tableData"
@@ -181,7 +183,6 @@
                 content: this.content
             }
             checkTemplate(data).then(res => {
-                debugger
                 let paramList = res.data.paramList || []
                 let photoList = res.data.photoList || []
                 _this.stringParams = []

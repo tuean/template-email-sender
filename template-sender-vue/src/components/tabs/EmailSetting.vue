@@ -61,7 +61,6 @@
               this.emailConfigVisible = true
           },
           deleteIt(id) {
-            debugger
               if (this.instantEmail != null && this.instantEmail != '') {
                 id = this.instantEmail
               }
