@@ -1,13 +1,30 @@
 # template-email-sender
 send different email by template or excel. etc
 
-#### 项目背景 
-好基友有个需求 希望能通过模板发送不同内容的g-mail邮件到不同的收件人
+#### background 
+One of my best friend told me that he want a tool to send similar emails to different recevices by template.
+I googled it and could't find a perfert tool or website to do this..
+So I start this project by making a tool to help my friend and other people around the world.
 
-#### 已完成
+#### introduce
+This provide the ability to create the content with 
+* word
+* photo
+* annex
 
+and send to different 
+* to
+* cc
+* bcc
+
+#### done
+to be continued
+
+#### doing
+1. the core programme
 
 #### todo
-1. 基于excel模板解析发送
-2. 基于email template的解析发送
-3. gui
+1. the tool website
+2. calendar support
+3. for windows
+4. for mac
