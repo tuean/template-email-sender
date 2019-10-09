@@ -1,11 +1,11 @@
 package excel;
 
-import entity.WholeMessageInfo;
+import model.EmailTemplate;
 
 import java.io.InputStream;
 
 public interface IExcelParser {
 
-    WholeMessageInfo parse(InputStream inputStream);
+    EmailTemplate parse(InputStream inputStream);
 
 }

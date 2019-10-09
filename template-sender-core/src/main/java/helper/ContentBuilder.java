@@ -92,7 +92,7 @@ public class ContentBuilder {
                     .toList(parseAddresses(emailTemplate.getReceiverList().get(x).getToList(), errorList))
                     .title(replace(emailTemplate.getTitle(), map))
                     .content(replace(emailTemplate.getTemplate(), map))
-                    .serverSetting(emailTemplate.getSmtpConfig() == null ? SmtpConfigStorage.get(emailTemplate.getSmtpConfigId()) : emailTemplate.getSmtpConfig())
+                    .serverSetting(emailTemplate.getServerSetting())
                     .build();
             list.add(model);
         }

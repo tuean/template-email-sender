@@ -1,14 +1,11 @@
 package model;
 
-import entity.Annex;
 import entity.PhotoTair;
 import entity.ReceiverContainer;
 import entity.ServerSetting;
 import lombok.*;
 
-import javax.sound.midi.Receiver;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -18,9 +15,7 @@ import java.util.Map;
 @Builder
 public class EmailTemplate {
 
-    private String smtpConfigId;
-
-    private ServerSetting smtpConfig;
+    private ServerSetting serverSetting;
 
     private String template;
 

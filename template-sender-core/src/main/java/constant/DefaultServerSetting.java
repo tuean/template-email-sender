@@ -6,7 +6,7 @@ import enums.EmailType;
 public class DefaultServerSetting {
 
 
-    public ServerSetting getServerSettingByType(EmailType emailType) {
+    public static ServerSetting getServerSettingByType(EmailType emailType) {
         switch (emailType) {
             case E_163: return get163();
             case E_GMAIL: return getGmail();
@@ -15,7 +15,7 @@ public class DefaultServerSetting {
     }
 
 
-    private ServerSetting get163() {
+    private static ServerSetting get163() {
         return ServerSetting.builder()
                 .smtpHost("smtp.163.com")
                 .smtpSsl("false")
@@ -24,7 +24,7 @@ public class DefaultServerSetting {
                 .build();
     }
 
-    private ServerSetting getGmail() {
+    private static ServerSetting getGmail() {
         return ServerSetting.builder()
                 .smtpHost("smtp.gmail.com")
                 .smtpSsl("true")

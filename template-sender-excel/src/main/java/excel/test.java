@@ -1,12 +1,11 @@
-package tests;
+package excel;
 
 import entity.WholeMessageInfo;
-import excel.ExcelParseFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class ExcelParseTest {
+public class test {
 
     public static void main(String[] args) throws FileNotFoundException {
         String source = "C:\\Users\\Administrator\\IdeaProjects\\template-email-sender\\test-doc\\template-excel.xlsx";

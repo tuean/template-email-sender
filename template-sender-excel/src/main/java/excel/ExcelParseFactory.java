@@ -12,7 +12,7 @@ public class ExcelParseFactory {
 //        if () {
         // TODO: 2019/10/8
 //        }
-        parser = new ParseByPoi();
+        parser = new ParserByPoi();
         return parser.parse(inputStream);
     }
 }
