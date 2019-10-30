@@ -2,7 +2,7 @@
 const localStorageKey = "email-uuid"
 const selectedKey = 'email-selected'
 const localStorageSeperate = ";"
-
+const paramKey = 'email-keys';
 
 export const getEmailList = () => {
   let value = localStorage.getItem(localStorageKey)
@@ -78,4 +78,50 @@ export const contentStore = (data) => {
 
 export const getTempContent = () => {
   return localStorage.getItem(tempForContent)
+}
+
+
+
+
+export const getKeys = () => {
+  let value = localStorage.getItem(paramKey)
+  if (value == null || value.length < 1) {
+    return []
+  }
+
+  return JSON.parse(value)
+}
+
+
+export const updateKey = (item) => {
+  let list = getKeys()
+  let size = list.length
+  let updateFlag = false
+  for (let x = 0; size > x; x++) {
+    if (list[x].name === item.name) {
+      list[x] = item
+      updateFlag = true
+      break
+    }
+  }
+
+  if (!updateFlag) {
+    list.push(item)
+  }
+
+  localStorage.setItem(paramKey, JSON.stringify(list))
+}
+
+export const deleteKey = (item) => {
+  let list = getKeys()
+  let size = list.length
+  if (size < 1) return
+  for (let x = 0; size > x; x++) {
+    if (list[x].name === item.name) {
+      list = list.slice(0, x).concat(list.slice(x+1, list.length))
+      break
+    }
+  }
+
+  localStorage.setItem(paramKey, JSON.stringify(list))
 }

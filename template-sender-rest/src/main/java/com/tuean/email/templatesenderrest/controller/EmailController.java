@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import helper.SenderHelper;
-import helper.ContentBuilder;
+import builder.ContentBuilder;
 
 import java.util.List;
 

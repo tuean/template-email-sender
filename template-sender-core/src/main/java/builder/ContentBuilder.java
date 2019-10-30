@@ -1,4 +1,4 @@
-package helper;
+package builder;
 
 import entity.PhotoTair;
 import entity.WholeMessageInfo;
@@ -6,10 +6,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import innerStorage.SmtpConfigStorage;
 import model.EmailTemplate;
 import model.ParseResult;
-import model.TemplateCheckRequest;
 import model.TemplateCheckResponse;
 import org.apache.commons.lang.StringUtils;
 import util.CommonUtil;

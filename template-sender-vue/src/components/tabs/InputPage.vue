@@ -31,8 +31,7 @@
         </el-col>
         <el-col :span="1"/>
         <el-col :span="3">
-          <el-button type="primary" @click="checkContent()">校验</el-button>
-          <div class="notice">会清空表格数据</div>
+          <el-button type="primary" @click="doSend()">发送</el-button>
         </el-col>
       </el-row>
     </section>
@@ -48,18 +47,10 @@
             style="width:100%">
 
             <el-table-column
-              v-for="(val, i) in stringParams"
+              v-for="(val, i) in paramList"
               :key="i"
-              :prop='val.prop'
-              :label='val.label'
-              align="center">
-            </el-table-column>
-
-            <el-table-column
-              v-for="(val, i) in photoParams"
-              :key="i"
-              :prop='val.prop'
-              :label='val.label'
+              :prop='val.type'
+              :label='val.name'
               align="center">
             </el-table-column>
 
@@ -76,14 +67,18 @@
         </el-col>
         <el-col :span="1"/>
         <el-col :span="3">
-          <el-button type="primary" @click="add()">新增</el-button>
+          <div>
+            <el-button type="primary" @click="add()">新增字段</el-button>
+          </div>
+          &nbsp;
+          <div>
+            <el-button type="primary" @click="addData()">新增属性</el-button>
+          </div>
         </el-col>
       </el-row>
     </section>
 
     <params-fill :show.sync="paramFillVisible"
-                 v-bind:param-list="stringParams"
-                 v-bind:photo-list="photoParams"
                  v-if="paramFillVisible"
     />
   </div>
@@ -94,7 +89,7 @@
 
   import ParamsFill from "../dialogs/ParamsFill";
   import {checkTemplate} from '../../axios/api'
-  import {contentStore, getTempContent} from '../../util/storage'
+  import {contentStore, getTempContent, getKeys} from '../../util/storage'
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
@@ -145,8 +140,7 @@
               // 有的图片服务器要求请求头需要有token
           },
           tableData: [],
-          stringParams: [],
-          photoParams: [],
+          paramList: [],
           paramFillVisible: false,
         };
       },
@@ -177,34 +171,8 @@
         saveHtml: function(event){
 
         },
-        checkContent() {
-            let _this = this
-            let data = {
-                content: this.content
-            }
-            checkTemplate(data).then(res => {
-                let paramList = res.data.paramList || []
-                let photoList = res.data.photoList || []
-                _this.stringParams = []
-                _this.photoParams = []
-                for (let x = 0; paramList.length > x; x++) {
-                    let data = {
-                        "prop" : paramList[x],
-                        "label" : paramList[x]
-                    }
-                    _this.stringParams.push(data)
-                }
+        doSend() {
 
-                for (let x = 0; photoList.length > x; x++) {
-                    let data = {
-                        "prop" : paramList[x],
-                        "label" : paramList[x]
-                    }
-                    _this.photoParams.push(data)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
         },
         uploadSuccess(res, file) {
           // res为图片服务器返回的数据
@@ -232,7 +200,14 @@
         },
           reCheck() {
 
-          }
+          },
+        refreshKeys() {
+          this.paramList = getKeys();
+        },
+        addData() {
+
+        }
+
     },
       components: {
           ParamsFill
@@ -242,6 +217,7 @@
           if (temp != null && temp.length > 0) {
               this.content = temp
           }
+          this.refreshKeys()
       }
   }
 </script>

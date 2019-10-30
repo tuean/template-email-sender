@@ -2,27 +2,20 @@
   <el-dialog title="参数设置" :visible.sync="paramFillVisible" v-if="paramFillVisible" :show="show"  @close="closeModal()" :append-to-body="true">
     <el-form ref="form" :model="data" label-width="80px">
 
-      <el-form-item label="收件人">
-        <el-input v-model="data.toList" placeholder="多个请用英文逗号分隔"></el-input>
+      <el-form-item label="字段名">
+        <el-input v-model="data.name" placeholder="多个请用英文逗号分隔"></el-input>
       </el-form-item>
 
-      <el-form-item label="抄送人">
-        <el-input v-model="data.ccList" placeholder="多个请用英文逗号分隔"></el-input>
+      <el-form-item label="字段类型">
+        <el-select v-model="data.type" placeholder="" clearable>
+          <el-option
+            v-for="item in typeList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
-
-      <el-form-item label="密送人">
-        <el-input v-model="data.bccList" placeholder="多个请用英文逗号分隔"></el-input>
-      </el-form-item>
-
-
-      <el-form-item
-        v-for="(val, i) in paramList"
-        :key="i"
-        :label="val.label"
-      >
-        <el-input v-model="data[val.prop]" />
-      </el-form-item>
-
 
 
       <el-form-item>
@@ -38,18 +31,19 @@
 
 <script>
 
+  import {updateKey, deleteKey} from '../../util/storage'
 
   export default {
       data() {
           return {
               paramFillVisible: this.show,
-              ifList: [
+              typeList: [
                   {
-                      label: 'true',
-                      value: 'true'
+                      label: '字符串',
+                      value: 'string'
                   },{
-                      label: 'false',
-                      value: 'false'
+                      label: '图片',
+                      value: 'photo'
                   }
               ],
           }
@@ -64,23 +58,10 @@
               default: function () {
                   return {}
               }
-          },
-          paramList: {
-              type: Array,
-              default: function () {
-                  return []
-              }
-          },
-          photoList: {
-              type: Array,
-              default: function () {
-                  return []
-              }
           }
       },
       created() {
-         console.log(this.paramList)
-         console.log(this.photoList)
+
       },
       watch: {
           show() {
@@ -92,6 +73,14 @@
               this.$emit('update:show', false)
           },
           cancel() {
+              this.closeModal()
+          },
+          onSubmit() {
+              updateKey(this.data)
+              this.closeModal()
+          },
+          onRemove() {
+              deleteKey(this.data)
               this.closeModal()
           }
       }

@@ -1,9 +1,6 @@
-package helper;
+package builder;
 
-import entity.ServerSetting;
 import entity.WholeMessageInfo;
-import enums.ResultType;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import javax.activation.DataHandler;
@@ -13,7 +10,6 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.mail.util.ByteArrayDataSource;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
 
