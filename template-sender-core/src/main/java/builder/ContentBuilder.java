@@ -195,10 +195,10 @@ public class ContentBuilder {
                 .build();
     }
 
-//    public static void main(String[] args) {
-//        String source = "asjdd$w{word}123";
-//        System.out.println(getUnreplaced(source, WORD_SEP));
-//    }
+    public static void main(String[] args) {
+        String source = "asjdd$w{word}123";
+        System.out.println(getUnreplaced(source, WORD_SEP));
+    }
 
 
     private static Set<String> getUnreplaced(String source, String type) {
@@ -240,10 +240,11 @@ public class ContentBuilder {
 
 
     public static String getPhotoPlaceHolder(String key) {
-        return "$" + PHOTO_SEP + "{" + key + "}";
+        return "$" + PHOTO_SEP + "{" + key.trim() + "}";
     }
 
     public static boolean isPhotoPlaceHolder(String key) {
+        key = key.trim();
         return key.startsWith("$" + PHOTO_SEP + "{") && key.endsWith("}");
     }
 

@@ -9,7 +9,7 @@ public class FileController {
 
     @GetMapping(value = "/")
     public String get() {
-        return "succes";
+        return "success";
     }
 
 }

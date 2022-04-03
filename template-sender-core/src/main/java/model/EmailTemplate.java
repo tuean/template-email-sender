@@ -17,6 +17,8 @@ public class EmailTemplate {
 
     private ServerSetting serverSetting;
 
+    private boolean useTemplate;
+
     private String template;
 
     private String title;

@@ -17,6 +17,10 @@ public class SmtpConfigStorage {
         return uuid;
     }
 
+    public static void put(String key, ServerSetting smtpConfig) {
+        smtpConfigMap.put(key, smtpConfig);
+    }
+
     public static ServerSetting get(String key) {
         return smtpConfigMap.get(key);
     }

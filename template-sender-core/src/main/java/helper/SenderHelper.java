@@ -50,4 +50,11 @@ public class SenderHelper {
     }
 
 
+    public static List<String> doSend(EmailTemplate emailTemplate) {
+        List<String> result = new ArrayList<>();
+
+        return result;
+    }
+
+
 }
